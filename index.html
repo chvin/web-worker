@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Web Worker test" />
+  <meta name="keywords" content="Web Worker,Web Worker test,Web Worker test">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Worker test</title>
+  <style type="text/css">
+    html,body{
+      margin: 0;
+      padding: 0;
+      font-family: Menlo, Monaco, 'Courier New', monospace;
+    }
+    h1{
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    #box{
+      background-color: #000;
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+    }
+    #time{
+      font-size: 28px;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .clac {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Worker test</h1>
+  <div id="box"></div>
+  <div id="time"></div>
+  <div class="clac">
+    <button id="webWorkerRun">Web Worker run</button>
+    <div id="webWorkerResult"></div>
+    <br />
+    <button id="jsRun">JS run</button>
+    <div id="jsResult"></div>
+  </div>
+  <script id="worker" type="app/worker">
+    addEventListener('message', function (e) {
+      if (e.data !== 'run') {
+        return;
+      }
+      const startTime = Date.now();
+      const arr = new Array(100000000);
+      let sum = 0;
+      for (var i = 0; i < arr.length; i++) {
+        arr[i] = i;
+        sum += i;
+      }
+      postMessage({
+        time: (Date.now() - startTime) / 1000,
+        result: sum,
+      });
+    }, false);
+  </script>
+  <script src="./index.js"></script>
+</body>
+</html>
